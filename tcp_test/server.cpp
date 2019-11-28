@@ -3,12 +3,21 @@
 #include <QThread>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QString>
 
 Server::Server(QObject *parent) : QObject(parent)
 {
     m_piserver = new QTcpServer;
     m_pisocket = new QTcpSocket;
     StartListen(2016);
+}
+
+void responseRequest(QByteArray arr)
+{
+    QString str= arr;
+    QJsonDocument doc= QJsonDocument::fromJson(str.toLocal8Bit().data());
+    QJsonObject obj= doc.object();
+    qDebug()<<obj.value("name").toString();
 }
 
 void Server::StartListen(int nPort)
@@ -33,13 +42,10 @@ void Server::readMessage()
     qDebug() << "read client message";
     QByteArray buf;
     buf = m_pisocket->readAll();
-    QString str=buf;
-    QJsonDocument doc=QJsonDocument::fromJson(str.toLocal8Bit().data());
-    QJsonObject obj=doc.object();
-    qDebug()<<obj.value("name").toString();
+    qDebug() << buf;
     QThread::sleep(2);
     m_pisocket->write("got message");
-    qDebug() << buf;
+    responseRequest(buf);
 }
 
 void Server::disConnect()
