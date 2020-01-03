@@ -1,10 +1,10 @@
 /*
  * @Description: 
  * @Author: Loki Zhao
- * @Copyright: Karl Storz
+ * @Copyright: Loki Zhao
  * @Date: 2020-01-03 16:20:08
  * @LastEditors  : Loki Zhao
- * @LastEditTime : 2020-01-03 16:57:31
+ * @LastEditTime : 2020-01-03 17:02:57
  */
 #include <stdlib.h>
 #include <stdio.h>
