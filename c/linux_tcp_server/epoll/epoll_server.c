@@ -19,8 +19,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#define IPADDRESS "10.96.16.30"
-#define PORT 3100
+#define IPADDRESS "127.0.0.1"
+#define PORT 3111
 #define MAXSIZE 1024
 #define LISTENQ 5
 #define FDSIZE 1000
@@ -60,9 +60,18 @@ static int socket_bind(const char *ip, int port)
     struct sockaddr_in servaddr;
     //建立socket，返回fd
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    //错误处理
     if (listenfd == -1)
     {
         printf("create socket failed \n");
+        exit(1);
+    }
+
+    int reuse = 1;
+    //设置端口释放后立即可以使用，SO_REUSEADDR，如果不设置，端口被释放后，要两分钟才能再次被使用
+    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) == -1)
+    {
+        printf("set SO_REUSEADDR failed \n");
         exit(1);
     }
 

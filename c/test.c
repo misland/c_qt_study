@@ -9,14 +9,15 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+#include <time.h>
 
 int main()
 {
-    FILE *fp = NULL;
-    char *ptr;
-    gcvt(1594710966.515913, 20, ptr);
-    fp = fopen("test.txt", "wb+");
-    fwrite(ptr, 1, strlen(ptr), fp);
-    fclose(fp);
+    while (1)
+    {
+        printf("hello\n");
+        sleep(5);
+    }
+
     return 0;
 }

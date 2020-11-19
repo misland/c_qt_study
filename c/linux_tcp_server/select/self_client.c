@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -17,15 +18,16 @@
 
 int main()
 {
+    char res[4096] = {0};
     int client_sockfd;
     int len;
     struct sockaddr_in address;
     int result;
-    char ch = 'S';
+    char cmd[] = "require blueriver_api 2.18.0.0\n";
     client_sockfd = socket(AF_INET, SOCK_STREAM, 0);
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = inet_addr("127.0.0.1");
-    address.sin_port = htons(8787);
+    address.sin_addr.s_addr = inet_addr("localhost");
+    address.sin_port = htons(6970);
     len = sizeof(address);
     result = connect(client_sockfd, (struct sockaddr *)&address, len);
     if (result == -1)
@@ -35,16 +37,17 @@ int main()
     }
     //第一次读写
     printf("the first time send data to server \n");
-    write(client_sockfd, &ch, 1);
-    read(client_sockfd, &ch, 1);
-    printf("the first time:char from server is: %c \n", ch);
-    // sleep(5);
-
-    //第二次读写
-    // printf("the second time send data to server \n");
-    // write(client_sockfd, &ch, 1);
-    // read(client_sockfd, &ch, 1);
-    // printf("the second time:char from server is: %c \n", ch);
+    int nwrite = write(client_sockfd, &cmd, strlen(cmd));
+    printf("length write to server:%d\n", nwrite);
+    int nread = read(client_sockfd, &res, 1024);
+    if (nread > 0)
+    {
+        printf("response from server is: %s \n", res);
+    }
+    else
+    {
+        printf("receive server message failed\n");
+    }
 
     close(client_sockfd);
 
