@@ -51,6 +51,12 @@ typedef struct TestNode
   struct TestNode *next;
 } Node, *pNode;
 
+typedef struct Dog
+{
+  char name[50];
+  int age;
+} Dog;
+
 int main()
 {
   printf("size of struct is : %d \n", sizeof(book));
@@ -72,9 +78,26 @@ int main()
   pNode tnode = NULL;
   //这里会抛出TestNode未定义的错误，因为已经给TestNode取了别名：Node
   // printf("sizeof Node:%d\n", sizeof(TestNode));
-  printf("sizeof pNode:%d\n", sizeof(pNode));//输出8
-  printf("sizeof Node:%d\n", sizeof(Node));//输出24，两个int（8），两个指针（16）
+  printf("sizeof pNode:%d\n", sizeof(pNode)); //输出8
+  printf("sizeof Node:%d\n", sizeof(Node));   //输出24，两个int（8），两个指针（16）
   tnode = (pNode)malloc(sizeof(Node));
+
+  // 当变量不是指针时，使用.来访问成员
+  Dog husky;
+  printf("sizeof husky:%d\n", sizeof(husky));
+  husky.age = 2;
+  strcpy(husky.name, "haha");
+  printf("name:%s,age:%d\n", husky.name, husky.age);
+
+  // 当变量是指针时，使用->来访问成员
+  Dog *doggie = (Dog *)malloc(sizeof(Dog));
+  // Dog* doggie; //这样是不对的，必须要申请内存空间
+  printf("sizeof doggie:%d\n", sizeof(doggie));
+  doggie->age = 3;
+  strcpy(doggie->name, "maodan");
+  printf("name:%s,age:%d\n", doggie->name, doggie->age);
+  free(doggie);
+  printf("doggie memory has been flushed\n");
 
   return 0;
 }

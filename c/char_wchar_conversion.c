@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description: demo for wchar_t to char
  * @Author: Loki Zhao
  * @Copyright: Loki Zhao
  * @Date: 2020-05-20 13:52:29
@@ -13,7 +13,6 @@
 
 int main(int argc, char *argv)
 {
-    //wchar_t to char
     //加个L表示是wchar_t类型的字符串，否则转换时会出错
     wchar_t *wstr = L"hello world";
     size_t len = wcslen(wstr) + 1;
